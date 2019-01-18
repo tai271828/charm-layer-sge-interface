@@ -1,0 +1,5 @@
+name: sge-cluster
+summary: interface for SGE master
+maintainer:
+  - Taihsiang Ho (tai271828) <tai271828@gmail.com>
+version: 1
