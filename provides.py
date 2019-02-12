@@ -11,7 +11,6 @@ class SGEProvides(Endpoint):
         set_flag(self.expand_name('endpoint.{endpoint_name}.new-exchanger'))
         clear_flag(self.expand_name('endpoint.{endpoint_name}.changed.hostname'))
 
-
     def exchangers(self):
         exchanger_nodes = []
         for relation in self.relations:
@@ -26,10 +25,14 @@ class SGEProvides(Endpoint):
                 })
         return exchanger_nodes
 
-
     def publish_info(self, hostname=None):
         for relation in self.relations:
-            print("A provider is publishing its config...")
+            hookenv.log("A provider is publishing its config...")
             relation.to_publish['hostname'] = hostname or\
             hookenv.unit_get('public_address')
+
+    def publish_info_mpi(self, mpi_hosts=None):
+        for relation in self.relations:
+            hookenv.log("Publishing MPI host list...")
+            relation.to_publish['mpi_hosts'] = mpi_hosts
 

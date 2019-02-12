@@ -11,7 +11,6 @@ class SGERequires(Endpoint):
         set_flag(self.expand_name('endpoint.{endpoint_name}.new-exchanger'))
         clear_flag(self.expand_name('endpoint.{endpoint_name}.changed.hostname'))
 
-
     def exchangers(self):
         exchanger_nodes = []
         for relation in self.relations:
@@ -26,10 +25,15 @@ class SGERequires(Endpoint):
                 })
         return exchanger_nodes
 
+    @when_any('endpoint.{endpoint_name}.changed.mpi_hosts')
+    def new_mpi_host(self):
+        hookenv.log("MPI host list changes...")
+        set_flag(self.expand_name('endpoint.{endpoint_name}.new-mpi-host'))
+        clear_flag(self.expand_name('endpoint.{endpoint_name}.changed.new-mpi-host'))
 
     def publish_info(self, hostname=None):
         for relation in self.relations:
-            print("A requirer is publishing its config...")
+            hookenv.log("A requirer is publishing its config...")
             relation.to_publish['hostname'] = hostname or\
             hookenv.unit_get('public_address')
 
